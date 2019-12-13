@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EQueue - Online queues</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/styles/preloader.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preloader" class="preloader">
+  <div class="preloader__title">Загруз очка</div>
+  <div class="preloader__comment" id="preloader-comment">Падажжи, лаба грузится</div>
+  <div class="preloader__error_msg" id="preloader-error-msg"></div>
+</div>
+
+<div id="app"></div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-49331984-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-49331984-2');
+</script>
+
+<script src="/dist/build.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+.preloader {
+  font-family: "Rubik", serif;
+  z-index: 9999999999;
+  background: white;
+  color: black;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preloader__title {
+  font-size: calc(48px + 1vw);
+  font-weight: 500;
+}
+
+.preloader__comment {
+  font-size: calc(14px + 0.5vw);
+  text-transform: uppercase;
+  animation: preloader-anim 1s linear infinite;
+}
+
+.preloader__comment.hidden {
+  display: none;
+}
+
+
+.preloader__error_msg {
+  font-size: calc(14px + 0.5vw);
+  color: darkred;
+}
+
+@keyframes preloader-anim {
+  0% {
+    color: black;
+  }
+
+  50% {
+    color: #aaa;
+  }
+
+  100% {
+    color: black;
+  }
+}
