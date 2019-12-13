@@ -1,0 +1,19 @@
+{
+  "name": "web_lab3",
+  "version": "1.0.0",
+  "description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david-d25/web-lab4.git"
+  },
+  "author": "david <david-d25@yandex.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david-d25/web-lab4/issues"
+  },
+  "homepage": "https://github.com/david-d25/web-lab4#readme"
+}
