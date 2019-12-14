@@ -15,12 +15,6 @@
                       @input="errorHints.name = null"
                       :error-hint="errorHints.name"/>
 
-          <text-input :hint="$t('pages.registration.form.hints.surname')"
-                      v-model="form.surname"
-                      class="register__input"
-                      @input="errorHints.surname = null"
-                      :error-hint="errorHints.surname"/>
-
           <text-input :hint="$t('pages.registration.form.hints.email')"
                       type="email"
                       v-model="form.email"
@@ -73,7 +67,6 @@
 
         form: {
           name: '',
-          surname: '',
           email: '',
           password: '',
           repeatedPassword: ''
@@ -81,7 +74,6 @@
 
         errorHints: {
           name: null,
-          surname: null,
           email: null,
           password: null,
           repeatedPassword: null
@@ -90,9 +82,6 @@
         errorMsg: null,
         registerSuccess: false
       }
-    },
-    mounted() {
-      this.$parent.$refs.header.setTitle('Register');
     },
     methods: {
       doRegister() {
@@ -103,8 +92,6 @@
 
         if (this.form.name.trim() === '')
           this.errorHints.name = this.$t('pages.registration.form.error_hints.name_empty');
-        else if (this.form.surname.trim() === '')
-          this.errorHints.surname = this.$t('pages.registration.form.error_hints.surname_empty');
         else if (this.form.email.trim() === '')
           this.errorHints.email = this.$t('pages.registration.form.error_hints.email_empty');
         else if (this.form.password === '')
@@ -113,8 +100,6 @@
           this.errorHints.repeatedPassword = this.$t('pages.registration.form.error_hints.repeated_password_empty');
         else if (!this.form.name.match(userRegex.name))
           this.errorHints.name = this.$t('pages.registration.form.error_hints.name_mismatch');
-        else if (!this.form.surname.match(userRegex.surname))
-          this.errorHints.surname = this.$t('pages.registration.form.error_hints.surname_mismatch');
         else if (this.form.password.toLowerCase().match(/(you|u)\s*(suc|succ|suck)/)) {
           this.errorHints.password = 'no u';
         } else if (!this.form.password.match(userRegex.password))
@@ -126,7 +111,6 @@
           axios.post('/api/register', {
             action: 'register',
             name: this.form.name,
-            surname: this.form.surname,
             email: this.form.email,
             password: this.form.password
           }).then((response) => {
