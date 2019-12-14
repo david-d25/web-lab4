@@ -4,6 +4,7 @@
       <div class="header">
         <router-link to="/" class="desktop_menu__logo -color-light">{{ $t('components.header.title') }}</router-link>
         <span class="header__text">{{ $t('components.header.student_info') }}</span>
+        <language-selector/>
       </div>
     </container>
   </header>
@@ -11,9 +12,10 @@
 
 <script>
   import Container from "#/components/Container";
+  import LanguageSelector from "#/components/LanguageSelector";
 
   export default {
-    components: { Container },
+    components: {LanguageSelector, Container },
   }
 </script>
 
