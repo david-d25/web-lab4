@@ -1,38 +1,19 @@
 export default {
   components: {
-    search_items: {
-      queue_search_item: {
-        closed: "ЗАКРЫТО"
+    language_selector: {
+      label: "Язык",
+      languages: {
+        english: "Английский",
+        russian: "Русский"
       }
-    },
-    search_box: {
-      search: "Поиск..."
-    },
-    queue_item: {
-      profile: "Профиль",
-      stand_behind: "Встать за",
-      remove: "Удалить",
-      now: "СЕЙЧАС"
     },
     header: {
       settings: "Настройки",
       student_info: "Давтян Д. А., вариант 20131, группа P3201",
-      search_hint: "Искать везде...",
-      queues: "Очереди",
-      groups: "Группы",
-      users: "Люди",
       title: "Лаба 4",
       log_in: "Войти",
       anonymous: "Аноним",
       close: "закрыть",
-      or: "или",
-      register_verb: "Зарегистрироваться"
-    },
-    user_dropdown: {
-      profile: "Профиль",
-      settings: "Настройки",
-      log_out: "Выйти",
-      log_in: "Войти",
       or: "или",
       register_verb: "Зарегистрироваться"
     },
@@ -49,29 +30,6 @@ export default {
         remove: "Удалить"
       }
     },
-    queue_managers_editor: {
-      title: "Менеджеры",
-      more_info: "Подробнее",
-      hide_more_info: "Закрыть",
-      info: `Модератор может:<br>
-      - Удалять кого-то из очереди<br>
-      - Открывать и закрывать очередь<br>
-      <br>
-      Администратор может:<br>
-      - То, что модератор<br>
-      - Перемещать элементы очереди<br>
-      - Редактировать информацию об очереди<br>
-      - Редактировать список менеджеров`,
-      controls: {
-        add_admin: "Добавить администратора",
-        add_moderator: "Добавить модератора"
-      },
-      errors: {
-        manager_already_exists: "Этот менеджер уже есть в списке",
-        queue_not_found: "Очередь не найдена. Возможно, её только что удалили",
-        last_admin: "Последний администратор не может быть удалён"
-      }
-    }
   },
   pages: {
     edit_queue: {

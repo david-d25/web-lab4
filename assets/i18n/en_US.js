@@ -1,38 +1,19 @@
 export default {
   components: {
-    search_items: {
-      queue_search_item: {
-        closed: "CLOSED"
+    language_selector: {
+      label: "Language",
+      languages: {
+        english: "English",
+        russian: "Russian"
       }
-    },
-    search_box: {
-      search: "Search..."
-    },
-    queue_item: {
-      profile: "Profile",
-      stand_behind: "Stand behind",
-      remove: "Remove",
-      now: "NOW"
     },
     header: {
       settings: "Settings",
       student_info: "Davtyan D. A., variant 20131, group P3201",
-      search_hint: "Global search...",
-      queues: "Queues",
-      groups: "Groups",
-      users: "Users",
       title: "Labwork 4",
       log_in: "Log in",
       anonymous: "Anonymous",
       close: "close",
-      or: "or",
-      register_verb: "Register"
-    },
-    user_dropdown: {
-      profile: "Profile",
-      settings: "Settings",
-      log_out: "Log out",
-      log_in: "Log in",
       or: "or",
       register_verb: "Register"
     },
@@ -49,29 +30,6 @@ export default {
         remove: "Remove"
       }
     },
-    queue_managers_editor: {
-      title: "Managers",
-      more_info: "More info",
-      hide_more_info: "Hide",
-      info: `Moderator can:<br>
-      - Remove queue items<br>
-      - Open and close queue<br>
-      <br>
-      Admin can:<br>
-      - The same as moderator<br>
-      - Move items<br>
-      - Edit queue data<br>
-      - Edit managers list`,
-      controls: {
-        add_admin: "Add admin",
-        add_moderator: "Add moderator"
-      },
-      errors: {
-        manager_already_exists: "The queue already has this manager",
-        queue_not_found: "Queue not found. It may have been just removed",
-        last_admin: "The last admin can't be removed from managers"
-      }
-    }
   },
   pages: {
     edit_queue: {
