@@ -71,7 +71,7 @@
   .lang_selector__dropdown_wr {
     position: absolute;
     top: 100%;
-    right: -20px;
+    right: 0;
     background: white;
     color: black;
     border-radius: 4px;
