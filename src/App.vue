@@ -1,6 +1,7 @@
 <template>
   <div class="root">
     <e-header ref="header"></e-header>
+    <toaster ref="toaster"></toaster>
     <router-view :key="this.$route.fullPath"></router-view>
   </div>
 </template>
@@ -19,16 +20,21 @@
   import Main from "#/pages/Main";
   import NotFound from "#/pages/NotFound";
   import Register from "#/pages/Register";
+  import PasswordReset from "#/pages/PasswordReset";
+  import Toaster from "#/components/Toaster";
+  import ToasterPlugin from "#/plugins/ToasterPlugin";
 
   Vue.use(VueRouter);
+  Vue.use(ToasterPlugin);
   Vue.use(VueI18n);
 
   const routes = [
-    { path: '/',          redirect: '/login'  },
-    { path: '/login',     component: Login    },
-    { path: '/register',  component: Register },
-    { path: '/main',      component: Main     },
-    { path: '*',          component: NotFound },
+    { path: '/',                redirect: '/login'        },
+    { path: '/login',           component: Login          },
+    { path: '/register',        component: Register       },
+    { path: '/password-reset',  component: PasswordReset  },
+    { path: '/main',            component: Main           },
+    { path: '*',                component: NotFound       },
   ];
 
   let router = new VueRouter({
@@ -75,7 +81,15 @@
           auth: false,
           id: null,
           name: null,
-          token: null
+          token: null,
+          email: null
+        },
+        checkingRegex: {
+          user: {
+            name: /^[A-Za-zА-Яа-я]{2,50}$/,
+            surname: /^[A-Za-zА-Яа-я]{2,50}$/,
+            password: /^.{8,4096}$/
+          },
         }
       }
     },
@@ -86,6 +100,7 @@
     },
     components: {
       'e-header': Header,
+      'toaster': Toaster,
       VueRouter
     },
     mounted() {
