@@ -6,11 +6,7 @@
 </template>
 
 <script>
-  export default {
-    mounted() {
-      this.$parent.$refs.header.setTitle('7H1$ 1$ F13K$');
-    }
-  }
+  export default {}
 </script>
 
 <style scoped>
