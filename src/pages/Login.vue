@@ -176,9 +176,4 @@
     color: #c20000;
     margin: 10px 0;
   }
-
-  .login__info_msg {
-    color: #00c200;
-    margin: 10px 0;
-  }
 </style>
