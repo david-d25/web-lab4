@@ -20,9 +20,10 @@
 </script>
 
 <style scoped lang="scss">
+  @import "~$src/styles/tablet.scss";
+
   .desktop_menu__logo {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex: 1;
   }
@@ -33,6 +34,10 @@
     align-items: center;
     flex: 3;
     font-size: .75em;
+
+    @include tablet {
+      display: none;
+    }
   }
 
   .header_wr {
