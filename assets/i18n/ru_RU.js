@@ -7,6 +7,9 @@ export default {
         russian: "Русский"
       }
     },
+    button_array_input: {
+      custom_value: "Другое значение:"
+    },
     header: {
       settings: "Настройки",
       student_info: "Давтян Д. А., вариант 20131, группа P3201",
@@ -133,7 +136,8 @@ export default {
         prefix: "",
         link: "Войдите, ",
         postfix: "чтобы использовать эту страницу"
-      }
+      },
+      submit: "ЪУЪ"
     },
   },
   common: {

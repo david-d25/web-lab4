@@ -7,6 +7,9 @@ export default {
         russian: "Russian"
       }
     },
+    button_array_input: {
+      custom_value: "Custom value:"
+    },
     header: {
       settings: "Settings",
       student_info: "Davtyan D. A., variant 20131, group P3201",
@@ -133,7 +136,8 @@ export default {
         prefix: "Please ",
         link: "log in",
         postfix: " to access this page"
-      }
+      },
+      submit: "GO GO GO >>>"
     },
   },
   common: {
