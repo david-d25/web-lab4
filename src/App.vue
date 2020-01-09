@@ -94,18 +94,19 @@
       }
     },
     watch: {
-      locale(val) {
-        this.$i18n.locale = val;
+      locale(newValue) {
+        this.$i18n.locale = newValue;
+        localStorage.setItem('locale', newValue);
       },
       'user.token': {
         handler: function (newValue) {
-          window.localStorage.setItem('user.token', newValue);
+          localStorage.setItem('user.token', newValue);
         },
         deep: true
       },
       'user.email': {
         handler: function (newValue) {
-          window.localStorage.setItem('user.email', newValue);
+          localStorage.setItem('user.email', newValue);
         },
         deep: true
       }
@@ -117,6 +118,10 @@
     },
     methods: {
       bootstrap() {
+        let locale = localStorage.getItem('locale');
+        if (locale)
+          this.locale = locale;
+
         let email = localStorage.getItem('user.email');
         let token = localStorage.getItem('user.token');
         if (email && token) {
