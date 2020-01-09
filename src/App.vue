@@ -1,8 +1,8 @@
 <template>
   <div class="root">
-    <e-header ref="header"></e-header>
-    <toaster ref="toaster"></toaster>
-    <router-view :key="this.$route.fullPath"></router-view>
+    <e-header ref="header"/>
+    <toaster ref="toaster"/>
+    <router-view :key="this.$route.fullPath"/>
   </div>
 </template>
 
@@ -23,6 +23,7 @@
   import PasswordReset from "#/pages/PasswordReset";
   import Toaster from "#/components/Toaster";
   import ToasterPlugin from "#/plugins/ToasterPlugin";
+  import axios from 'axios';
 
   Vue.use(VueRouter);
   Vue.use(ToasterPlugin);
@@ -79,7 +80,6 @@
         locale: 'en_US',
         user: {
           auth: false,
-          id: null,
           name: null,
           token: null,
           email: null
@@ -96,12 +96,54 @@
     watch: {
       locale(val) {
         this.$i18n.locale = val;
+      },
+      'user.token': {
+        handler: function (newValue) {
+          window.localStorage.setItem('user.token', newValue);
+        },
+        deep: true
+      },
+      'user.email': {
+        handler: function (newValue) {
+          window.localStorage.setItem('user.email', newValue);
+        },
+        deep: true
       }
     },
     components: {
       'e-header': Header,
       'toaster': Toaster,
       VueRouter
+    },
+    methods: {
+      bootstrap() {
+        let email = localStorage.getItem('user.email');
+        let token = localStorage.getItem('user.token');
+        if (email && token) {
+          axios.post('/api/bootstrap', {
+            login: email, token
+          }).then((response) => {
+            this.user.name = response.data.name;
+            this.user.email = email;
+            this.user.token = token;
+            this.user.auth = true;
+          }).catch((error) => {
+            if (error.response) {
+              let status = +error.response.status;
+
+              if (status === 401) {
+                localStorage.removeItem('user.email');
+                localStorage.removeItem('user.token');
+                this.$router.replace({ path: '/login' });
+              }
+            }
+          }).finally(() => {
+            onAppLoaded();
+          });
+        } else {
+          onAppLoaded();
+        }
+      }
     },
     mounted() {
       let locale = null;
@@ -124,7 +166,7 @@
       if (locale)
         this.locale = locale;
 
-      onAppLoaded();
+      this.bootstrap();
     },
     router,
     i18n

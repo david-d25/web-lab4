@@ -4,9 +4,11 @@
       <div class="register" :class="{ 'loading': loading }" v-if="!registerSuccess">
         <h1 class="register__title">{{ $t('pages.registration.title') }}</h1>
 
-        <div class="register__error_msg" v-if="errorMsg != null" @click="errorMsg = null">
-          {{ errorMsg }}
-        </div>
+        <transition-expand>
+          <div class="register__error_msg" v-if="errorMsg != null" @click="errorMsg = null">
+            {{ errorMsg }}
+          </div>
+        </transition-expand>
 
         <form class="register__form" @submit.prevent="doRegister">
           <text-input :hint="$t('pages.registration.form.hints.name')"
@@ -58,9 +60,10 @@
   import TextInput from "../components/TextInput";
   import Button from "#/components/Button";
   import Container from "#/components/Container";
+  import TransitionExpand from "#/components/TransitionExpand";
 
   export default {
-    components: {TextInput, 'e-button': Button, Container},
+    components: {TransitionExpand, TextInput, 'e-button': Button, Container},
     data() {
       return {
         loading: false,
@@ -88,6 +91,7 @@
         if (this.loading)
           return;
 
+        this.errorMsg = null;
         let userRegex = this.$parent.checkingRegex.user;
 
         if (this.form.name.trim() === '')
@@ -108,50 +112,30 @@
           this.errorHints.repeatedPassword = this.$t('pages.registration.form.error_hints.passwords_dont_match');
         } else {
           this.loading = true;
-          axios.post('/api/register', {
-            action: 'register',
+          axios.post('/api/registration/request', {
             name: this.form.name,
             email: this.form.email,
             password: this.form.password
           }).then((response) => {
-            switch (response.data['status']) {
-              case "ok":
-                this.registerSuccess = true;
-                this.$parent.$refs.header.title = this.$t('pages.registration.success_title');
-                break;
-
-              case "error":
-                switch (response.data['err_msg']) {
-                  case "empty_fields":
-                  case "data_incorrect":
-                  case "data_not_full":
-                    this.$parent.$refs.toaster.toast(this.$t('pages.registration.errors.data_incorrect'), { type: 'red' });
-                    break;
-
-                  case "email_is_registered":
-                    this.errorHints.email = this.$t('pages.registration.errors.email_is_registered');
-                    break;
-
-                  case "email_is_registering":
-                    this.errorHints.email = this.$t('pages.registration.errors.email_is_registering');
-                    break;
-
-                  default:
-                    this.errorMsg = this.$t('pages.registration.errors.default_error', [response.data['err_msg']]);
-                }
-                break;
-
-              case "internal_error":
-                this.errorMsg = this.$t('pages.registration.errors.internal_error', [response.data['err_msg']]);
-                break;
-
-              default:
-                this.errorMsg = this.$t('pages.registration.errors.unexpected_response', [response.data['status']]);
-                break;
-            }
+            this.registerSuccess = true;
           }).catch((error) => {
             if (error.response) {
-              this.errorMsg = this.$t('common.response_error', [error.response.status]);
+              let status = +error.response.status;
+              let data = error.response.data;
+
+              if (status === 500) {
+                this.errorMsg = this.$t('pages.registration.errors.internal_error', [status]);
+              } else if (status === 400) {
+                if (data['err_msg'] === 'user_exists') {
+                  this.errorMsg = this.$t('pages.registration.errors.email_is_registered');
+                } else if (data['err_msg'] === 'invalid_data') {
+                  this.errorMsg = this.$t('pages.registration.errors.data_incorrect');
+                } else {
+                  this.errorMsg = this.$t('pages.registration.errors.unexpected_response', [data['err_msg']]);
+                }
+              } else {
+                this.errorMsg = this.$t('pages.registration.errors.unexpected_response', [status]);
+              }
             } else if (error.request) {
               this.errorMsg = this.$t('common.you_are_offline');
             } else {

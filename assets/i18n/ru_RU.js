@@ -79,6 +79,10 @@ export default {
         invalid_token: "Похоже, эта ссылка подержит ошибки",
         default_error: "Возникла ошибка при подтверждении ({0}})",
         unexpected_response: "Неизвестный ответ сервера ({0}})"
+      },
+      already_logged_in: {
+        message: "Похоже, вы уже вошли.",
+        to_main: "Перейти на главную страницу"
       }
     },
     registration: {
@@ -121,144 +125,16 @@ export default {
         unexpected_response: "Неожиданный ответ от сервера: {0}"
       }
     },
-    new_queue: {
-      title: "Давайте создадим очередь!",
-      title_easter: "Давайте без «Давайте»",
-      form: {
-        name: "Название очереди",
-        id: "Ссылка на очередь",
-        submit: "Создать!"
-      },
-      please_log_in: {
-        prefix: "",
-        link: "Войдите",
-        postfix: ", чтобы создавать очереди"
-      },
-      error_hints: {
-        name_mismatch: "Имя должно содержать 2..128 символов",
-        id_mismatch: "Ссылка должна иметь 1..120 английских символов, 0-9 или _"
-      },
-      errors: {
-        wrong_data: "Пожалуйста, проверьте введённые данные",
-        id_exists: "Такая ссылка уже есть",
-        default_error: "Не получилось создать очередь: {0}",
-        internal_error: "Внутренняя ошибка сервера ಠ_ಠ ({0})",
-        unexpected_response: "Неожиданный ответ от сервера: {0}"
-      }
-    },
     not_found: {
       comment: "По этой ссылке ничего не нашлось"
     },
-    search: {
-      title: "Поиск",
-      searchbox_placeholder: "Искать везде...",
-      search_groups: {
-        queues: {
-          title: "Очереди",
-          button_text: "Все очереди"
-        },
-        groups: {
-          title: "Группы",
-          button_text: "Все группы"
-        },
-        users: {
-          title: "Пользователи",
-          button_text: "Все пользователи"
-        }
-      },
-      no_results: "Нет результатов",
-      errors: {
-        default_error: "Ошибка поиска ({0})",
-        internal_error: "Внтуренняя ошибка сервера ({0})",
-        unexpected_response: "Неожиданный ответ от сервера ({0})"
-      }
-    },
-    queue: {
-      title: "Очередь",
-      not_found: {
-        title: "Очередь не найдена",
-        advice: {
-          prefix: "Попробуйте ",
-          link: "воспользоваться поиском"
-        }
-      },
-      controls: {
-        open_button: "Открыть",
-        close_button: "Закрыть",
-        less_button: "Свернуть",
-        more_button: "Раскрыть",
-        enter_button: "Войти",
-        leave_button: "Выйти",
-        edit: "Редактировать"
-      },
-      queue_closed: "Очередь закрыта",
-      login_to_enter: {
+    main: {
+      access_denied: {
         prefix: "",
-        link: "Авторизируйтесь,",
-        postfix: " чтобы войти"
-      },
-      queue_empty: {
-        title: "Тут ещё никого нет...",
-        enter_advice: "...но вы можете войти!"
-      },
-      errors: {
-        must_be_member: "Вы должны быть в списке участников, чтобы войти",
-        queue_closed: "Очеред закрыта",
-        already_entered: "Вы уже вошли",
-        not_entered: "Вы не в очереди",
-        internal_error: "Внутренняя ошибка сервера ({0})",
-        queue_removed: "Эту очередь только что удалили",
-        user_not_in_queue: "Пользователя нет в очереди. Попробуйте перезагрузить страницу",
-        wrong_target_position: "Выберите другую позицию",
-        not_enough_privileges: "У вас недостаточно прав для этого действия"
-      },
-      long_polling: {
-        errors: {
-          queue_not_found: "Эта очередь больше не существует",
-          connection_error: "Проблемы с подключением ({0})",
-          internal_error: "Проблемы с подключением (ошибка на стороне сервера)",
-          reconnecting: "Восстанавливаем соединение...",
-          offline: "Офлайн-режим, пытаемся соединиться..."
-        }
+        link: "Войдите, ",
+        postfix: "чтобы использовать эту страницу"
       }
     },
-    queues: {
-      title: "Очереди",
-      searchbox_placeholder: "Искать очереди...",
-    },
-    user: {
-      title: "Пользователь",
-      edit: "Редактировать",
-      not_found: {
-        title: "User not found",
-        advice: {
-          prefix: "Try using ",
-          link: "search"
-        }
-      }
-    },
-    users: {
-      title: "Люди",
-      searchbox_placeholder: "Искать людей...",
-    },
-    edit_user: {
-      title: "Редактирование",
-      form: {
-        hints: {
-          name: "Имя",
-          surname: "Фамилия"
-        }
-      },
-      errors: {
-        wrong_data: "Пожалуйста, проверьте введенные данные"
-      },
-      go_back_btn: "Вернуться",
-      please_log_in: {
-        prefix: "",
-        link: "Войдите",
-        postfix: ", чтобы использовать эту страницу"
-      },
-    }
   },
   common: {
     you_are_offline: "Вы офлайн",

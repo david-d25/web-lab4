@@ -63,7 +63,7 @@
     margin: auto auto auto 10px;
     top: 0;
     bottom: 0;
-    transform: rotate(45deg);
+    transform: translateY(-3px) rotate(45deg);
     border-bottom: 2px solid white;
     border-right: 2px solid white;
   }

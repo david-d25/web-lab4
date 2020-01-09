@@ -10,6 +10,17 @@
           </div>
         </transition-expand>
 
+        <transition-expand>
+          <div class="login__info_msg" v-if="infoMsg != null" @click="infoMsg = null">
+            {{ infoMsg }}
+          </div>
+        </transition-expand>
+
+        <div class="login__already_logged_in" v-if="$parent.user.auth">
+          <div>{{$t( 'pages.login.already_logged_in.message' )}}</div>
+          <router-link to="/main">{{$t( 'pages.login.already_logged_in.to_main' )}}</router-link>
+        </div>
+
         <form class="login__form" @submit.prevent="doLogin">
           <text-input class="login__input"
                       v-model="form.login"
@@ -58,7 +69,8 @@
           login: null,
           password: null
         },
-        errorMsg: null
+        errorMsg: null,
+        infoMsg: null
       }
     },
     methods: {
@@ -75,59 +87,32 @@
         } else {
           this.loading = true;
 
-          axios.post('/api/login', {
+          axios.post('/api/auth/login', {
             login: this.form.login,
             password: this.form.password
           }).then((response) => {
-            let json = response.data;
-            switch (json.status) {
-              case "ok":
-                let user = json['user'];
-                setCookie("user_id", user.id, { expires: new Date(user['token_expiry']).toUTCString() });
-                setCookie("user_token", user.token, { expires: new Date(user['token_expiry']).toUTCString() });
-                this.$parent.user.auth = true;
-                this.$parent.user.id = user.id;
-                this.$parent.user.name = user.name;
-                this.$parent.user.surname = user.surname;
-                this.$parent.user.token = user.token;
-                this.$parent.user.email = user.email;
-                this.$parent.user.picture = user.picture;
-                this.$parent.user.locale = user.locale;
-
-                let redirectAddr = this.$route.query['redirect'];
-                if (redirectAddr)
-                  this.$parent.$router.push({ path: decodeURI(redirectAddr) });
-                else
-                  this.$parent.$router.push({ path: '/queues' });
-                break;
-
-              case "error":
-                switch (response.data['err_msg']) {
-                  case "login_failed":
-                    this.errorMsg = this.$t('pages.login.errors.login_failed');
-                    break;
-
-                  case "data_not_full":
-                    this.errorMsg = this.$t('pages.login.errors.data_not_full');
-                    break;
-
-                  default:
-                    this.errorMsg = this.$t('pages.login.errors.default_error', [response.data['err_msg']]);
-                    break;
-                }
-                break;
-
-              case "internal_error":
-                this.errorMsg = this.$t('pages.login.errors.internal_error', [response.data['err_msg']]);
-                break;
-
-              default:
-                this.errorMsg = this.$t('pages.login.errors.unexpected_response', [response.data['status']]);
-                break;
-            }
+            let { name, token } = response.data;
+            this.$parent.user.name = name;
+            this.$parent.user.token = token;
+            this.$parent.user.email = this.form.login;
+            this.$parent.user.auth = true;
+            this.$router.push({ path: '/main' });
           }).catch((error) => {
             if (error.response) {
-              this.errorMsg = this.$t('pages.login.errors.default_error', [error.response.status]);
+              let status = +error.response.status;
+              let data = error.response.data;
+
+              if (status === 500) {
+                this.errorMsg = this.$t('pages.login.errors.internal_error', [error.response.status]);
+              } else if (status === 400) {
+                if (data['err_msg'] === 'invalid_credentials') {
+                  this.errorMsg = this.$t('pages.login.errors.login_failed', [error.response.status]);
+                } else {
+                  this.errorMsg = this.$t('pages.login.errors.unexpected_response', [error.response.status]);
+                  console.dir(data);
+                }
+              } else
+                this.errorMsg = this.$t('pages.login.errors.default_error', [error.response.status]);
             } else if (error.request) {
               this.errorMsg = this.$t('common.you_are_offline');
             } else {
@@ -141,11 +126,57 @@
           });
         }
       }
+    },
+    mounted() {
+      let { action, target, token } = this.$route.query;
+      if (action === 'confirm_reg' && target && token) {
+        this.loading = true;
+
+        axios.post('/api/registration/confirmation', {
+          email: target,
+          token
+        }).then(() => {
+          this.infoMsg = this.$t('pages.login.reg_confirm.success');
+        }).catch((error) => {
+          if (error.response) {
+            let status = +error.response.status;
+            let data = error.response.data;
+
+            if (status === 500) {
+              this.errorMsg = this.$t('pages.login.errors.internal_error', [error.response.status]);
+            } else if (status === 400) {
+              if (data['err_msg'] === 'token_not_found') {
+                this.errorMsg = this.$t('pages.login.reg_confirm.token_not_found');
+              } else {
+                this.errorMsg = this.$t('pages.login.errors.unexpected_response', [error.response.status]);
+                console.dir(data);
+              }
+            } else
+              this.errorMsg = this.$t('pages.login.errors.unexpected_response', [error.response.status]);
+          } else if (error.request) {
+            this.errorMsg = this.$t('common.you_are_offline');
+          } else {
+            this.errorMsg = this.$t('common.unknown_error');
+
+            console.error(error);
+          }
+        }).finally(() => {
+          this.loading = false;
+        });
+      }
     }
   }
 </script>
 
 <style scoped>
+  .login__already_logged_in {
+    border: 1px solid #36ff31;
+    border-radius: 3px;
+    background: rgba(84, 255, 71, 0.29);
+    margin-bottom: 15px;
+    padding: 12px;
+  }
+
   .start {
     margin: 20px 0;
     text-align: center;
@@ -174,6 +205,11 @@
 
   .login__error_msg {
     color: #c20000;
+    margin: 10px 0;
+  }
+
+  .login__info_msg {
+    color: #215fc2;
     margin: 10px 0;
   }
 </style>
