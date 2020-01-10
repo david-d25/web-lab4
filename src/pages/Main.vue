@@ -8,6 +8,14 @@
               <graph width="1000" height="1000" v-model="point" :r="r" :prev-results="prevResults"/>
             </div>
             <form class="controls" :class="{ 'loading': formLoading }" @submit.prevent="onSubmit">
+              <div class="input_label">R</div>
+              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
+                                  v-model="r"
+                                  :error-hint="errorHints.r"
+                                  @input="errorHints.r = null"/>
+
+              <div class="delimiter"></div>
+
               <div class="input_label">X</div>
               <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
                                   v-model="point.x"
@@ -19,14 +27,6 @@
               <div class="input_label">Y</div>
               <text-input v-model="point.y" @input="errorHints.y = null" :error-hint="errorHints.y"/>
 
-              <div class="delimiter"></div>
-
-              <div class="input_label">R</div>
-              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
-                                  v-model="r"
-                                  :error-hint="errorHints.r"
-                                  @input="errorHints.r = null"/>
-
               <div class="delimiter invisible"></div>
 
               <e-button type="submit" green class="submit">{{$t( 'pages.main.submit' )}}</e-button>
@@ -37,6 +37,7 @@
       </div>
       <div class="prev_results_wr">
         <container>
+          <div class="prev_results__title">{{$t( 'pages.main.results.title' )}}</div>
           <div class="prev_results" :class="{ 'loading': prevResultsLoading }">
             <table>
               <tr>
@@ -48,7 +49,7 @@
                 <th>{{$t( 'pages.main.results.author' )}}</th>
                 <th>{{$t( 'pages.main.results.time_created' )}}</th>
               </tr>
-                <tr v-for="result in prevResults" :key="result.id">
+                <tr :class="{ 'result_row_anim': result.justLoaded }" v-for="result in prevResults" :key="result.id">
                   <td>{{ result.id }}</td>
                   <td>{{ result.x }}</td>
                   <td>{{ result.y }}</td>
@@ -108,6 +109,7 @@
       return {
         prevResultsLoading: false,
         formLoading: false,
+        isMounted: false,
         point: {
           x: null,
           y: null
@@ -119,6 +121,11 @@
         },
         r: null,
         prevResults: []
+      }
+    },
+    computed: {
+      timeFriendly(millis) {
+
       }
     },
     methods: {
@@ -153,16 +160,24 @@
           }).then((response) => {
             let hit = response.data.hit;
             let id = response.data.id;
-            this.prevResults.unshift({
+            let newResult = {
               x: this.point.x,
               y: this.point.y,
               r: this.r,
+              justLoaded: true,
               authorName: this.$parent.user.name,
               authorEmail: this.$parent.user.email,
               created: Date.now(),
               hit,
               id
-            });
+            };
+
+            this.prevResults.unshift(newResult);
+            setTimeout(() => {
+              newResult.justLoaded = false;
+            }, 2000);
+            this.point.x = null;
+            this.point.y = null;
           }).catch((error) => {
             if (error.response) {
               let status = +error.response.status;
@@ -213,6 +228,7 @@
       }
     },
     mounted() {
+      this.isMounted = true;
       this.loadResults();
     }
   }
@@ -283,13 +299,13 @@
   }
 
   .prev_results_wr {
-    padding: 25px 0;
+    padding: 10px 0;
   }
 
   .delimiter {
     width: 100%;
     border-bottom: 1px solid grey;
-    margin: 35px auto;
+    margin: 25px auto;
 
     &.invisible {
       opacity: 0;
@@ -321,7 +337,7 @@
           background-color: rgba(255, 255, 255, .2);
         }
 
-        &:hover {
+        &:not(:first-child):hover {
           background-color: rgba(0, 0, 0, .2);
         }
       }
@@ -330,7 +346,7 @@
         padding: 15px 5px;
 
         &:nth-child(1) {
-          flex: 1;
+          flex: 1.4;
         }
         &:nth-child(2) {
           flex: 2;
@@ -361,6 +377,12 @@
     }
   }
 
+  .prev_results__title {
+    text-align: center;
+    margin: 10px;
+    font-size: calc(18px + 1vw);
+  }
+
   .input_label {
     font-size: 24px;
     text-align: center;
@@ -382,6 +404,50 @@
       .result_owner__name {
         display: none;
       }
+    }
+  }
+  
+  .result_row_anim {
+    animation: result_row 1800ms;
+    transition: background-color 300ms, color 300ms;
+  }
+
+  .result_row_anim:nth-child(2n) {
+    animation: result_row_odd 1800ms;
+    transition: background-color 300ms, color 300ms;
+  }
+  
+  @keyframes result_row {
+    0% {
+      background-color: transparent;
+      color: black;
+    }
+
+    25% {
+      background-color: #ab4a7f;
+      color: white;
+    }
+
+    100% {
+      background-color: transparent;
+      color: black;
+    }
+  }
+
+  @keyframes result_row_odd {
+    0% {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: black;
+    }
+
+    25% {
+      background-color: #ab4a7f;
+      color: white;
+    }
+
+    100% {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: black;
     }
   }
 </style>

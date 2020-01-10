@@ -139,6 +139,7 @@ export default {
       },
       submit: "GO GO GO >>>",
       results: {
+        title: "Previous results",
         hit: "Hit",
         hit_yes: "Yeah",
         hit_no: "Nope.",

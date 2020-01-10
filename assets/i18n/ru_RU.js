@@ -139,6 +139,7 @@ export default {
       },
       submit: "ЪУЪ",
       results: {
+        title: "Предыдущие результаты",
         hit: "Пробитие",
         hit_yes: "Дааа",
         hit_no: "Нит",
