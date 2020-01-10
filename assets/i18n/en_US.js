@@ -137,7 +137,24 @@ export default {
         link: "log in",
         postfix: " to access this page"
       },
-      submit: "GO GO GO >>>"
+      submit: "GO GO GO >>>",
+      results: {
+        hit: "Hit",
+        hit_yes: "Yeah",
+        hit_no: "Nope.",
+        author: "Owner",
+        time_created: "Created"
+      },
+      errors: {
+        x_not_selected: "You have to select X",
+        y_not_selected: "You have to select Y",
+        r_not_selected: "You have to select R",
+        y_incorrect: "Y must be a number",
+        x_constraint_failed: "X must be in [-5; 3]",
+        y_constraint_failed: "Y must be in (-3; 3)",
+        r_constraint_failed: "R must be greater than 0",
+        data_incorrect: "It looks like the data is incorrect. Please, check it again"
+      }
     },
   },
   common: {

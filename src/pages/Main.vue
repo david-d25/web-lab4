@@ -7,19 +7,25 @@
             <div class="graph">
               <graph width="1000" height="1000" v-model="point" :r="r" :prev-results="prevResults"/>
             </div>
-            <form class="controls" :class="{ 'loading': formLoading }" @submit.prevent="">
+            <form class="controls" :class="{ 'loading': formLoading }" @submit.prevent="onSubmit">
               <div class="input_label">X</div>
-              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']" v-model="point.x"/>
+              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
+                                  v-model="point.x"
+                                  :error-hint="errorHints.x"
+                                  @input="errorHints.x = null"/>
 
               <div class="delimiter"></div>
 
               <div class="input_label">Y</div>
-              <text-input v-model="point.y"/>
+              <text-input v-model="point.y" @input="errorHints.y = null" :error-hint="errorHints.y"/>
 
               <div class="delimiter"></div>
 
               <div class="input_label">R</div>
-              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']" v-model="r"/>
+              <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
+                                  v-model="r"
+                                  :error-hint="errorHints.r"
+                                  @input="errorHints.r = null"/>
 
               <div class="delimiter invisible"></div>
 
@@ -32,7 +38,33 @@
       <div class="prev_results_wr">
         <container>
           <div class="prev_results" :class="{ 'loading': prevResultsLoading }">
-<!--            TODO-->
+            <table>
+              <tr>
+                <th>ID</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>R</th>
+                <th>{{$t( 'pages.main.results.hit' )}}</th>
+                <th>{{$t( 'pages.main.results.author' )}}</th>
+                <th>{{$t( 'pages.main.results.time_created' )}}</th>
+              </tr>
+                <tr v-for="result in prevResults" :key="result.id">
+                  <td>{{ result.id }}</td>
+                  <td>{{ result.x }}</td>
+                  <td>{{ result.y }}</td>
+                  <td>{{ result.r }}</td>
+                  <td>{{ result.hit ? $t('pages.main.results.hit_yes') : $t('pages.main.results.hit_no') }}</td>
+                  <td>
+                    <div class="result_owner">
+                      <div class="result_owner__name">{{ result.authorName }}</div>
+                      <div class="result_owner__email">{{ result.authorEmail }}</div>
+                    </div>
+                  </td>
+                  <td>
+                    ( TODO )
+                  </td>
+                </tr>
+            </table>
           </div>
         </container>
       </div>
@@ -67,8 +99,11 @@
   import TextInput from "#/components/TextInput";
   import Button from "#/components/Button";
 
+  import axios from 'axios';
+  import TransitionExpand from "#/components/TransitionExpand";
+
   export default {
-    components: { TextInput, ButtonArrayInput, Graph, Container, 'e-button': Button },
+    components: {TransitionExpand, TextInput, ButtonArrayInput, Graph, Container, 'e-button': Button },
     data() {
       return {
         prevResultsLoading: false,
@@ -77,12 +112,108 @@
           x: null,
           y: null
         },
+        errorHints: {
+          x: null,
+          y: null,
+          r: null
+        },
         r: null,
         prevResults: []
       }
     },
+    methods: {
+      onSubmit() {
+        if (this.formLoading)
+          return;
+
+        if (this.point.x == null) {
+          this.errorHints.x = this.$t('pages.main.errors.x_not_selected')
+        } else if (this.point.y == null || this.point.y.trim() === '') {
+          this.errorHints.y = this.$t('pages.main.errors.y_not_selected')
+        } else if (this.r == null) {
+          this.errorHints.r = this.$t('pages.main.errors.r_not_selected')
+        } else if (isNaN(this.point.y)) {
+          this.errorHints.y = this.$t('pages.main.errors.y_incorrect')
+        } else if (+this.point.y <= -3 || +this.point.y >= 3) {
+          this.errorHints.y = this.$t('pages.main.errors.y_constraint_failed')
+        } else if (+this.point.x < -5 || +this.point.x > 3) {
+          this.errorHints.x = this.$t('pages.main.errors.x_constraint_failed')
+        } else if (+this.r <= 0) {
+          this.errorHints.r = this.$t('pages.main.errors.r_constraint_failed')
+        } else {
+
+          this.formLoading = true;
+
+          axios.put('/api/points', {
+            x: +this.point.x,
+            y: +this.point.y,
+            r: +this.r,
+            login: this.$parent.user.email,
+            token: this.$parent.user.token
+          }).then((response) => {
+            let hit = response.data.hit;
+            let id = response.data.id;
+            this.prevResults.unshift({
+              x: this.point.x,
+              y: this.point.y,
+              r: this.r,
+              authorName: this.$parent.user.name,
+              authorEmail: this.$parent.user.email,
+              created: Date.now(),
+              hit,
+              id
+            });
+          }).catch((error) => {
+            if (error.response) {
+              let status = +error.response.status;
+
+              if (status === 401) {
+                this.$parent.user.auth = false;
+                this.$parent.user.email = null;
+                this.$parent.user.token = null;
+                this.$router.push({ path: '/login' });
+              } else if (status === 400) {
+                this.$toast(this.$t('pages.main.errors.data_incorrect'));
+              } else if (status === 500) {
+                this.$toast(this.$t('common.internal_server_error', [status]));
+              }
+            } else if (error.request) {
+              this.$toast(this.$t('common.you_are_offline'));
+            }
+          }).finally(() => {
+            this.formLoading = false;
+          });
+        }
+      },
+      loadResults() {
+        if (this.prevResultsLoading)
+          return;
+
+        this.prevResultsLoading = true;
+
+        axios.get('/api/points', {
+          // todo mine
+        }).then((response) => {
+          this.$set(this, 'prevResults', response.data);
+        }).catch((error) => {
+          if (error.response) {
+            let status = +error.response.status;
+
+            if (status === 400) {
+              this.$toast(this.$t('common.response_error', [status]));
+            } else if (status === 500) {
+              this.$toast(this.$t('common.internal_server_error', [status]));
+            }
+          } else if (error.request) {
+            this.$toast(this.$t('common.you_are_offline'));
+          }
+        }).finally(() => {
+          this.prevResultsLoading = false;
+        });
+      }
+    },
     mounted() {
-      // todo
+      this.loadResults();
     }
   }
 </script>
@@ -165,6 +296,71 @@
     }
   }
 
+  .prev_results {
+    table {
+      margin: auto;
+      display: block;
+      padding: 10px 20px;
+      max-width: 750px;
+      text-align: center;
+
+      tr {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        &:nth-child(1) {
+          border-bottom: 1px solid grey;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          background: rgba(255, 255, 255, .4);
+        }
+
+        &:nth-child(2n) {
+          background-color: rgba(255, 255, 255, .2);
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, .2);
+        }
+      }
+
+      th, td {
+        padding: 15px 5px;
+
+        &:nth-child(1) {
+          flex: 1;
+        }
+        &:nth-child(2) {
+          flex: 2;
+        }
+        &:nth-child(3) {
+          flex: 2;
+        }
+        &:nth-child(4) {
+          flex: 2;
+        }
+        &:nth-child(5) {
+          flex: 2;
+        }
+        &:nth-child(6) {
+          flex: 10;
+        }
+        &:nth-child(7) {
+          flex: 6;
+        }
+      }
+
+      td {
+        &:nth-child(1) {
+          opacity: .5;
+          border-right: 1px solid grey;
+        }
+      }
+    }
+  }
+
   .input_label {
     font-size: 24px;
     text-align: center;
@@ -172,5 +368,20 @@
 
   .submit {
     font-size: 24px;
+  }
+
+  .result_owner {
+    .result_owner__email {
+      display: none;
+    }
+
+    &:hover {
+      .result_owner__email {
+        display: block;
+      }
+      .result_owner__name {
+        display: none;
+      }
+    }
   }
 </style>

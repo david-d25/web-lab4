@@ -137,7 +137,24 @@ export default {
         link: "Войдите, ",
         postfix: "чтобы использовать эту страницу"
       },
-      submit: "ЪУЪ"
+      submit: "ЪУЪ",
+      results: {
+        hit: "Пробитие",
+        hit_yes: "Дааа",
+        hit_no: "Нит",
+        author: "Пользователь",
+        time_created: "Время"
+      },
+      errors: {
+        x_not_selected: "Надо выбрать X",
+        y_not_selected: "Надо выбрать Y",
+        r_not_selected: "Надо выбрать R",
+        y_incorrect: "Y должен быть числом",
+        x_constraint_failed: "X должен быть в [-5, 3]",
+        y_constraint_failed: "Y должен быть больше -3 и меньше 3",
+        r_constraint_failed: "R должен быть больше нуля",
+        data_incorrect: "Похоже, серверу не понравились эти данные. Попробуйте что-то другое"
+      }
     },
   },
   common: {

@@ -3,12 +3,19 @@
     <div class="buttons">
       <button v-for="current in values"
               :state-active="current === $props.value"
+              type="button"
+              :key="current.id"
               @click="$emit('input', current)">{{ current }}</button>
     </div>
     <transition-expand>
-      <div class="custom_value" v-if="isValueCustom">
+      <div class="custom_value" v-if="isValueCustom && !errorHint">
         {{$t( 'components.button_array_input.custom_value' )}}
         {{ value }}
+      </div>
+    </transition-expand>
+    <transition-expand>
+      <div class="error_hint" v-if="errorHint">
+        {{ errorHint }}
       </div>
     </transition-expand>
   </div>
@@ -22,6 +29,11 @@
     computed: {
       isValueCustom() {
         return this.value != null && this.values.indexOf(this.value) === -1;
+      }
+    },
+    watch: {
+      value(v) {
+        this.$emit('input', v);
       }
     }
   }
@@ -60,5 +72,9 @@
   button[state-active='true'] {
     border-bottom: 4px solid blue;
     padding-bottom: 7px;
+  }
+
+  .error_hint {
+    color: darkred;
   }
 </style>
