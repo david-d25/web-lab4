@@ -18,11 +18,16 @@
     data() {
       return {
         canvasContext: null,
-        mouseDownFlag: false
+        mouseDownFlag: false,
+        rSmooth: 0,
+        rUpdatingIntervalId: null,
       }
     },
     watch: {
       r() {
+        this.render();
+      },
+      rSmooth() {
         this.render();
       },
       'value.x': {
@@ -48,6 +53,11 @@
       this.canvasContext.ln = function(x, y) { this.lineTo(x*instance.width, y*instance.height); };
       this.canvasContext.txt = function(text, x, y) { this.fillText(text, x*instance.width, y*instance.height); };
       this.render();
+
+      this.rUpdatingIntervalId = setInterval(this.updateR, 1000/60);
+    },
+    beforeDestroy() {
+      clearInterval(this.rUpdatingIntervalId);
     },
     methods: {
       trim(point, n) {
@@ -57,10 +67,13 @@
         }
       },
       normalizedToGraphCoords(point) {
-        return {x: this.r*(point.x-.5)/.4, y: -this.r*(point.y-.5)/.4}
+        return {x: this.rSmooth*(point.x-.5)/.4, y: -this.rSmooth*(point.y-.5)/.4}
       },
       graphToNormalizedCoords(point) {
-        return {x: (point.x*0.4/this.r+0.5), y: (-point.y*0.4/this.r+0.5)}
+        return {x: (point.x*0.4/this.rSmooth+0.5), y: (-point.y*0.4/this.rSmooth+0.5)}
+      },
+      updateR() {
+        this.rSmooth += (this.r - this.rSmooth)/10;
       },
       onDrag(event) {
         if (!this.r || !this.mouseDownFlag)
@@ -87,7 +100,7 @@
         width = +width;
         height = +height;
 
-        let scale = this.r;
+        let scale = this.rSmooth.toFixed(2);
 
         ctx.clearRect(0, 0, width, height);
 
@@ -138,18 +151,18 @@
         ctx.font = "48px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.txt(scale ? -scale : "-R", .1, .52);
-        ctx.txt(scale ? -scale/2 : "-R/2", .3, .52);
-        ctx.txt(scale ? scale/2 : "R/2", .7, .52);
-        ctx.txt(scale ? scale : "R", .9, .52);
+        ctx.txt(scale ? (-scale).toPrecision(2) : "-R", .1, .52);
+        ctx.txt(scale ? (-scale/2).toPrecision(2) : "-R/2", .3, .52);
+        ctx.txt(scale ? (scale/2).toPrecision(2) : "R/2", .7, .52);
+        ctx.txt(scale ? (+scale).toPrecision(2) : "R", .9, .52);
         ctx.txt("x", .97, .52);
 
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
-        ctx.txt(scale ? -scale : "-R", .52, .9);
-        ctx.txt(scale ? -scale/2 : "-R/2", .52, .7);
-        ctx.txt(scale ? scale/2 : "R/2", .52, .3);
-        ctx.txt(scale ? scale : "R", .52, .1);
+        ctx.txt(scale ? (-scale).toPrecision(2) : "-R", .52, .9);
+        ctx.txt(scale ? (-scale/2).toPrecision(2) : "-R/2", .52, .7);
+        ctx.txt(scale ? (scale/2).toPrecision(2) : "R/2", .52, .3);
+        ctx.txt(scale ? (+scale).toPrecision(2) : "R", .52, .1);
         ctx.txt("y", .52, .03);
         ctx.stroke();
 
