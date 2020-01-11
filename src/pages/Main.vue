@@ -1,6 +1,6 @@
 <template>
   <div class="main_wr">
-    <div class="main" v-if="$parent.user.auth">
+    <div class="main" :class="{ 'blurred': !$parent.user.auth }">
       <div class="graph_content_wr -bg-light">
         <container>
           <div class="graph_content">
@@ -61,16 +61,14 @@
                       <div class="result_owner__email">{{ result.authorEmail }}</div>
                     </div>
                   </td>
-                  <td>
-                    ( TODO )
-                  </td>
+                  <td>{{ timeFriendly(new Date(result.created[0], result.created[1]-1,  result.created[2], result.created[3], result.created[4], result.created[5]).getTime()) }}</td>
                 </tr>
             </table>
           </div>
         </container>
       </div>
     </div>
-    <div class="access_denied" v-else>
+    <div class="access_denied" v-if="!$parent.user.auth">
       <container>
         <img  class="access_denied__image"
               src="/assets/img/access_denied.jpg"
@@ -120,15 +118,41 @@
           r: null
         },
         r: null,
+        currentMillisReactive: null,
+        currentMillisUpdateIntervalId: null,
         prevResults: []
       }
     },
     computed: {
-      timeFriendly(millis) {
+      timeFriendly() {
+        return (millis) => {
+          if (this.currentMillisReactive == null)
+            return '-';
 
+          let diff = this.currentMillisReactive - millis;
+
+          let seconds = Math.floor(diff/1000 % 60);
+          let minutes = Math.floor(diff/1000/60 % 60);
+          let hours = Math.floor(diff/1000/60/60 % 24);
+          let days = Math.floor(diff/1000/60/60/24);
+
+          if (diff < 3000)
+            return this.$t('pages.main.time.just_now');
+          else if (diff < 60 * 1000)
+            return this.$t('pages.main.time.seconds', [seconds]);
+          else if (diff < 60 * 60 * 1000)
+            return this.$t('pages.main.time.minutes', [minutes, seconds]);
+          else if (diff < 24 * 60 * 60 * 1000)
+            return this.$t('pages.main.time.hours', [hours, minutes]);
+          else
+            return this.$t('pages.main.time.days', [days, hours, minutes]);
+        }
       }
     },
     methods: {
+      updateCurrentMillis() {
+        this.currentMillisReactive = Date.now();
+      },
       onSubmit() {
         if (this.formLoading)
           return;
@@ -160,6 +184,16 @@
           }).then((response) => {
             let hit = response.data.hit;
             let id = response.data.id;
+            let date = new Date();
+            let created = [
+              date.getFullYear(),
+              date.getMonth()+1,
+              date.getDate(),
+              date.getHours(),
+              date.getMinutes(),
+              date.getSeconds()
+            ];
+
             let newResult = {
               x: this.point.x,
               y: this.point.y,
@@ -167,7 +201,7 @@
               justLoaded: true,
               authorName: this.$parent.user.name,
               authorEmail: this.$parent.user.email,
-              created: Date.now(),
+              created,
               hit,
               id
             };
@@ -230,6 +264,13 @@
     mounted() {
       this.isMounted = true;
       this.loadResults();
+      this.currentMillisUpdateIntervalId = setInterval(
+        this.updateCurrentMillis, 1000
+      );
+      this.updateCurrentMillis();
+    },
+    beforeDestroy() {
+      clearInterval(this.currentMillisUpdateIntervalId);
     }
   }
 </script>
@@ -244,7 +285,17 @@
 
   .access_denied {
     text-align: center;
-    padding: 35px;
+    padding: 100px 35px 35px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, .25);
+  }
+
+  .blurred {
+    filter: blur(10px);
   }
 
   .access_denied__image {

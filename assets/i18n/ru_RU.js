@@ -146,6 +146,13 @@ export default {
         author: "Пользователь",
         time_created: "Время"
       },
+      time: {
+        just_now: "Только что",
+        seconds: "{0} секунд назад",
+        minutes: "{0}м {1}с назад",
+        hours: "{0}ч {1}м назад",
+        days: "{0}д {1}ч {2}м назад",
+      },
       errors: {
         x_not_selected: "Надо выбрать X",
         y_not_selected: "Надо выбрать Y",

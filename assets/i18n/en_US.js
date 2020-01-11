@@ -146,6 +146,13 @@ export default {
         author: "Owner",
         time_created: "Created"
       },
+      time: {
+        just_now: "Just now",
+        seconds: "{0} seconds ago",
+        minutes: "{0}m {1}s ago",
+        hours: "{0}h {1}m ago",
+        days: "{0}d {1}h {2}m ago",
+      },
       errors: {
         x_not_selected: "You have to select X",
         y_not_selected: "You have to select Y",
