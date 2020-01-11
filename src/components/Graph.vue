@@ -91,8 +91,10 @@
         let {scrollWidth: maxX, scrollHeight: maxY} = this.$refs['canvas'];
         let normalized = {x: elemX/maxX, y: elemY/maxY};
         this.$emit('input', this.trim(this.normalizedToGraphCoords(normalized), 2));
+        setTimeout(() => {
+          this.$emit('click');
+        }, 0);
         this.render();
-        this.$emit('submit', this.trim(this.normalizedToGraphCoords(normalized), 2));
       },
       render() {
         let ctx = this.canvasContext;

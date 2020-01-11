@@ -1,5 +1,12 @@
 export default {
   components: {
+    user_dropdown: {
+      log_out: "Выйти",
+      log_out_from_everywhere: "Выйти везде",
+      log_in: "Войти",
+      or: "или",
+      register_verb: "Зарегистрироваться"
+    },
     language_selector: {
       label: "Язык",
       languages: {
@@ -148,8 +155,8 @@ export default {
       },
       time: {
         just_now: "Только что",
-        seconds: "{0} секунд назад",
-        minutes: "{0}м {1}с назад",
+        seconds: "{0} сек. назад",
+        minutes: "{0} мин. назад",
         hours: "{0}ч {1}м назад",
         days: "{0}д {1}ч {2}м назад",
       },

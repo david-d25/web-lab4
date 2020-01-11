@@ -5,7 +5,7 @@
         <container>
           <div class="graph_content">
             <div class="graph">
-              <graph width="1000" height="1000" v-model="point" :r="r" :prev-results="prevResults"/>
+              <graph width="1000" height="1000" v-model="point" :r="r" :prev-results="prevResults" @click="onSubmit"/>
             </div>
             <form class="controls" :class="{ 'loading': formLoading }" @submit.prevent="onSubmit">
               <div class="input_label">R</div>
@@ -141,7 +141,7 @@
           else if (diff < 60 * 1000)
             return this.$t('pages.main.time.seconds', [seconds]);
           else if (diff < 60 * 60 * 1000)
-            return this.$t('pages.main.time.minutes', [minutes, seconds]);
+            return this.$t('pages.main.time.minutes', [minutes]);
           else if (diff < 24 * 60 * 60 * 1000)
             return this.$t('pages.main.time.hours', [hours, minutes]);
           else

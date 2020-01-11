@@ -100,13 +100,19 @@
       },
       'user.token': {
         handler: function (newValue) {
-          localStorage.setItem('user.token', newValue);
+          if (newValue == null)
+            localStorage.removeItem('user.token');
+          else
+            localStorage.setItem('user.token', newValue);
         },
         deep: true
       },
       'user.email': {
         handler: function (newValue) {
-          localStorage.setItem('user.email', newValue);
+          if (newValue == null)
+            localStorage.removeItem('user.email');
+          else
+            localStorage.setItem('user.email', newValue);
         },
         deep: true
       }

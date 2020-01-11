@@ -40,6 +40,7 @@
   .lang_selector {
     position: relative;
     cursor: pointer;
+    font-size: .8em;
   }
 
   .lang_selector__label {
@@ -58,12 +59,12 @@
     display: block;
     content: '';
     right: -20px;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     margin: auto auto auto 10px;
     top: 0;
     bottom: 0;
-    transform: translateY(-3px) rotate(45deg);
+    transform: translateY(-1px) rotate(45deg);
     border-bottom: 2px solid white;
     border-right: 2px solid white;
   }
@@ -71,11 +72,12 @@
   .lang_selector__dropdown_wr {
     position: absolute;
     top: 100%;
-    right: 0;
+    right: -10px;
     background: white;
     color: black;
     border-radius: 4px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
+    width: 200px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   }
 
   .lang_selector__dropdown {

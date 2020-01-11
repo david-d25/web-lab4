@@ -5,6 +5,7 @@
         <router-link to="/" class="desktop_menu__logo -color-light">{{ $t('components.header.title') }}</router-link>
         <span class="header__text">{{ $t('components.header.student_info') }}</span>
         <language-selector/>
+        <user-dropdown :user="$parent.user"/>
       </div>
     </container>
   </header>
@@ -13,9 +14,10 @@
 <script>
   import Container from "#/components/Container";
   import LanguageSelector from "#/components/LanguageSelector";
+  import UserDropdown from "#/components/UserDropdown";
 
   export default {
-    components: {LanguageSelector, Container },
+    components: {UserDropdown, LanguageSelector, Container },
   }
 </script>
 
@@ -33,7 +35,8 @@
     justify-content: center;
     align-items: center;
     flex: 3;
-    font-size: .75em;
+    opacity: .5;
+    font-size: .65em;
 
     @include tablet {
       display: none;

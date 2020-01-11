@@ -1,5 +1,12 @@
 export default {
   components: {
+    user_dropdown: {
+      log_out: "Log out",
+      log_out_from_everywhere: "Log out from everywhere",
+      log_in: "Log in",
+      or: "or",
+      register_verb: "Register"
+    },
     language_selector: {
       label: "Language",
       languages: {
@@ -149,7 +156,7 @@ export default {
       time: {
         just_now: "Just now",
         seconds: "{0} seconds ago",
-        minutes: "{0}m {1}s ago",
+        minutes: "{0}m ago",
         hours: "{0}h {1}m ago",
         days: "{0}d {1}h {2}m ago",
       },
