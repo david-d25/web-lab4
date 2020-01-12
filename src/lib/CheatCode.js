@@ -20,7 +20,7 @@ export default function () {
         buffer = buffer.substring(1);
 
       for (let it in map) {
-        if (it.endsWith(it)) {
+        if (buffer.endsWith(it)) {
           map[it]();
         }
       }
