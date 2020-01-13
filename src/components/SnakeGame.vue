@@ -13,6 +13,7 @@
 
 <script>
   import TransitionExpand from "#/components/TransitionExpand";
+
   export default {
     components: { TransitionExpand },
     data() {
