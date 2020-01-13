@@ -62,7 +62,7 @@
     flex: 1;
     cursor: pointer;
     outline: none;
-    transition: border 300ms, background 300ms;
+    transition: border 300ms, background 300ms, padding 300ms;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
   }
 

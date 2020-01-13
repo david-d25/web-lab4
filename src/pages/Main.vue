@@ -353,6 +353,7 @@
 
   .prev_results_wr {
     padding: 10px 0;
+    text-align: center;
   }
 
   .delimiter {
@@ -432,7 +433,8 @@
 
   .prev_results__title {
     text-align: center;
-    margin: 10px;
+    margin: 10px auto;
+    display: inline-block;
     font-size: calc(18px + 1vw);
   }
 
