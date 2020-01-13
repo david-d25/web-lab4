@@ -2,7 +2,10 @@
   <div class="root">
     <e-header ref="header"/>
     <toaster ref="toaster"/>
-    <router-view :key="this.$route.fullPath"/>
+    <router-view :key="this.$route.fullPath"
+                 :state-modal-blurred="blurCurrentView"/>
+
+    <snake-game/>
   </div>
 </template>
 
@@ -24,6 +27,7 @@
   import Toaster from "#/components/Toaster";
   import ToasterPlugin from "#/plugins/ToasterPlugin";
   import axios from 'axios';
+  import SnakeGame from "#/components/SnakeGame";
 
   Vue.use(VueRouter);
   Vue.use(ToasterPlugin);
@@ -78,6 +82,7 @@
     data () {
       return {
         locale: 'en_US',
+        blurCurrentView: false,
         user: {
           auth: false,
           name: null,
@@ -118,6 +123,7 @@
       }
     },
     components: {
+      SnakeGame,
       'e-header': Header,
       'toaster': Toaster,
       VueRouter

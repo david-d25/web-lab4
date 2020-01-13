@@ -75,3 +75,9 @@ a {
   right: 0;
   bottom: 0;
 }
+
+[state-modal-blurred] {
+  overflow: hidden;
+  max-height: calc(100vh - 50px);
+  filter: blur(10px);
+}

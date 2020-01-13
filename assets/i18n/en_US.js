@@ -1,5 +1,10 @@
 export default {
   components: {
+    snake_game: {
+      esc_to_exit: "Press ESC to quit",
+      before_start_msg: "Press Enter to start!",
+      pause: "Paused, press Enter"
+    },
     user_dropdown: {
       log_out: "Log out",
       log_out_from_everywhere: "Log out from everywhere",

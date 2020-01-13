@@ -3,6 +3,9 @@ export default function () {
   let maxBufferLength = 0;
   let buffer = '';
 
+  let activationSound = new Audio('/assets/media/cheat_activated.wav');
+  activationSound.load();
+
   this.addCheatListener = function (code, handler) {
     map[code.toUpperCase()] = handler;
 
@@ -21,9 +24,30 @@ export default function () {
 
       for (let it in map) {
         if (buffer.endsWith(it)) {
-          map[it]();
+          activationSound.play();
+          setTimeout(() => {
+            showActivationLabel();
+            map[it]();
+          }, 300);
         }
       }
     }
+  }
+
+  function showActivationLabel() {
+    let label = document.createElement('div');
+    label.innerText = "Cheat activated";
+    label.style.padding = '10px';
+    label.style.background = 'rgba(0, 0, 0, .6)';
+    label.style.position = 'fixed';
+    label.style.width = '300px';
+    label.style.left = '65px';
+    label.style.top = '65px';
+    label.style.zIndex = '99999999999';
+    label.style.fontWeight = '900';
+    label.style.fontSize = '22px';
+    label.style.color = 'white';
+    document.body.append(label);
+    setTimeout(() => {label.outerHTML = ''}, 3500);
   }
 };
