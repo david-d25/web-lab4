@@ -7,7 +7,10 @@ export default function () {
   activationSound.load();
 
   this.addCheatListener = function (code, handler) {
-    map[code.toUpperCase()] = handler;
+    if (handler == null)
+      delete map[code.toUpperCase()];
+    else
+      map[code.toUpperCase()] = handler;
 
     for (let it in map)
       if (it.length > maxBufferLength)

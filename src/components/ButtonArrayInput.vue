@@ -4,11 +4,12 @@
       <button v-for="current in values"
               :state-active="current === $props.value"
               type="button"
+              physical-body
               :key="current.id"
               @click="$emit('input', current)">{{ current }}</button>
     </div>
     <transition-expand>
-      <div class="custom_value" v-if="isValueCustom && !errorHint">
+      <div class="custom_value" v-if="isValueCustom && !errorHint" physical-body>
         {{$t( 'components.button_array_input.custom_value' )}}
         {{ value }}
       </div>
@@ -61,7 +62,7 @@
     flex: 1;
     cursor: pointer;
     outline: none;
-    transition: 300ms;
+    transition: border 300ms, background 300ms;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
   }
 

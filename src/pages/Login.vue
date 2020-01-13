@@ -2,46 +2,48 @@
   <div class="start">
     <container>
       <div class="login" :class="{'loading': loading}">
-        <h1>{{ $t('pages.login.title') }}</h1>
+        <h1 physical-body>{{ $t('pages.login.title') }}</h1>
 
         <transition-expand>
-          <div class="login__error_msg" v-if="errorMsg != null" @click="errorMsg = null">
+          <div class="login__error_msg" v-if="errorMsg != null" @click="errorMsg = null" physical-body>
             {{ errorMsg }}
           </div>
         </transition-expand>
 
         <transition-expand>
-          <div class="login__info_msg" v-if="infoMsg != null" @click="infoMsg = null">
+          <div class="login__info_msg" v-if="infoMsg != null" @click="infoMsg = null" physical-body>
             {{ infoMsg }}
           </div>
         </transition-expand>
 
-        <div class="login__already_logged_in" v-if="$parent.user.auth">
+        <div class="login__already_logged_in" v-if="$parent.user.auth" physical-body>
           <div>{{$t( 'pages.login.already_logged_in.message' )}}</div>
           <router-link to="/main">{{$t( 'pages.login.already_logged_in.to_main' )}}</router-link>
         </div>
 
         <form class="login__form" @submit.prevent="doLogin">
           <text-input class="login__input"
+                      physical-body
                       v-model="form.login"
                       :error-hint="errorHints.login"
                       @input="errorHints.login = null"
                       :hint="$t('pages.login.form.email_hint')"/>
           <text-input class="login__input"
+                      physical-body
                       v-model="form.password"
                       @input="errorHints.password = null"
                       :error-hint="errorHints.password"
                       :hint="$t('pages.login.form.password_hint')"
                       type="password"/>
 
-          <e-button class="login_button" type="submit">{{ $t('pages.login.form.log_in_button') }}</e-button>
+          <e-button class="login_button" type="submit" physical-body>{{ $t('pages.login.form.log_in_button') }}</e-button>
 
           <!--          <button type="button" class="button login-via-vk-button" disabled>Enter via VK (opens soon)</button>-->
 
-          <router-link to="/password-reset" class="login__forgot_password">{{ $t('pages.login.forgot_password_link') }}</router-link>
+<!--          <router-link to="/password-reset" class="login__forgot_password">{{ $t('pages.login.forgot_password_link') }}</router-link>-->
           <div style="height: 40px;"></div>
-          <div>{{ $t('pages.login.dont_have_account') }}</div>
-          <router-link to="/register" class="login__register">{{ $t('pages.login.register_link') }}</router-link>
+          <div physical-body>{{ $t('pages.login.dont_have_account') }}</div>
+          <router-link to="/register" class="login__register" physical-body>{{ $t('pages.login.register_link') }}</router-link>
         </form>
       </div>
     </container>

@@ -8,28 +8,28 @@
               <graph width="1000" height="1000" v-model="point" :r="r" :prev-results="prevResults" @click="onSubmit"/>
             </div>
             <form class="controls" :class="{ 'loading': formLoading }" @submit.prevent="onSubmit">
-              <div class="input_label">R</div>
+              <div class="input_label" physical-body>R</div>
               <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
                                   v-model="r"
                                   :error-hint="errorHints.r"
                                   @input="errorHints.r = null"/>
 
-              <div class="delimiter"></div>
+              <div class="delimiter" physical-body></div>
 
-              <div class="input_label">X</div>
+              <div class="input_label" physical-body>X</div>
               <button-array-input :values="['-5','-4','-3','-2','-1','0','1','2','3']"
                                   v-model="point.x"
                                   :error-hint="errorHints.x"
                                   @input="errorHints.x = null"/>
 
-              <div class="delimiter"></div>
+              <div class="delimiter" physical-body></div>
 
-              <div class="input_label">Y</div>
-              <text-input v-model="point.y" @input="errorHints.y = null" :error-hint="errorHints.y"/>
+              <div class="input_label" physical-body>Y</div>
+              <text-input v-model="point.y" @input="errorHints.y = null" :error-hint="errorHints.y" physical-body/>
 
               <div class="delimiter invisible"></div>
 
-              <e-button type="submit" green class="submit">{{$t( 'pages.main.submit' )}}</e-button>
+              <e-button type="submit" green class="submit" physical-body>{{$t( 'pages.main.submit' )}}</e-button>
             </form>
           </div>
 
@@ -37,10 +37,10 @@
       </div>
       <div class="prev_results_wr">
         <container>
-          <div class="prev_results__title">{{$t( 'pages.main.results.title' )}}</div>
+          <div class="prev_results__title" physical-body>{{$t( 'pages.main.results.title' )}}</div>
           <div class="prev_results" :class="{ 'loading': prevResultsLoading }">
             <table>
-              <tr>
+              <tr physical-body physical-body-bg="rgba(255, 255, 255, .4)">
                 <th>ID</th>
                 <th>X</th>
                 <th>Y</th>
@@ -49,7 +49,7 @@
                 <th>{{$t( 'pages.main.results.author' )}}</th>
                 <th>{{$t( 'pages.main.results.time_created' )}}</th>
               </tr>
-                <tr :class="{ 'result_row_anim': result.justLoaded }" v-for="result in prevResults" :key="result.id">
+                <tr :class="{ 'result_row_anim': result.justLoaded }" v-for="(result, i) in prevResults" :key="result.id" physical-body :physical-body-bg="`rgba(255, 255, 255, ${(i+1) % 2 * .4})`">
                   <td>{{ result.id }}</td>
                   <td>{{ result.x }}</td>
                   <td>{{ result.y }}</td>
@@ -72,14 +72,16 @@
       <container>
         <img  class="access_denied__image"
               src="/assets/img/access_denied.jpg"
+              physical-body
               alt="Слыш тебе сюда нельзя"
               v-if="this.$i18n.locale.startsWith('ru')">
         <img  class="access_denied__image"
               src="/assets/img/access_denied_en.jpg"
+              physical-body
               alt="Слыш тебе сюда нельзя"
               v-else>
 
-        <span class="access_denied__message">
+        <span class="access_denied__message" physical-body>
             {{$t( 'pages.main.access_denied.prefix' )}}
             <router-link to="/login">
               {{$t( 'pages.main.access_denied.link' )}}
@@ -437,6 +439,8 @@
   .input_label {
     font-size: 24px;
     text-align: center;
+    display: inline-block;
+    margin: auto;
   }
 
   .submit {

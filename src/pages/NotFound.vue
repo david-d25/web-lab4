@@ -1,7 +1,7 @@
 <template>
   <div class="not_found_page">
-    <div class="error_code -color-dark">404</div>
-    <div class="error_msg -color-dark">{{ $t('pages.not_found.comment') }}</div>
+    <div class="error_code -color-dark" physical-body>404</div>
+    <div class="error_msg -color-dark" physical-body>{{ $t('pages.not_found.comment') }}</div>
   </div>
 </template>
 

@@ -2,6 +2,9 @@
   <div class="graph">
     <canvas class="canvas"
             ref="canvas"
+            physical-body
+            physical-body-circle
+            physical-body-size-scale="0.9"
             :width="$props.width"
             :height="$props.height"
             @mousedown="mouseDownFlag = true"

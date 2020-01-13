@@ -2,10 +2,10 @@
   <header class="header_wr -bg-dark -color-light">
     <container>
       <div class="header">
-        <router-link to="/" class="desktop_menu__logo -color-light">{{ $t('components.header.title') }}</router-link>
-        <span class="header__text">{{ $t('components.header.student_info') }}</span>
-        <language-selector/>
-        <user-dropdown :user="$parent.user"/>
+        <router-link to="/" class="desktop_menu__logo -color-light" physical-body physical-body-bg="#2b2b2b">{{ $t('components.header.title') }}</router-link>
+        <span class="header__text" physical-body physical-body-bg="#2b2b2b">{{ $t('components.header.student_info') }}</span>
+        <language-selector physical-body physical-body-bg="#2b2b2b"/>
+        <user-dropdown :user="$parent.user" physical-body physical-body-bg="#2b2b2b"/>
       </div>
     </container>
   </header>
@@ -35,7 +35,7 @@
     justify-content: center;
     align-items: center;
     flex: 3;
-    opacity: .5;
+    color: rgba(255, 255, 255, .5);
     font-size: .65em;
 
     @include tablet {
@@ -44,7 +44,7 @@
   }
 
   .header_wr {
-    position: fixed;
+    position: absolute;
     z-index: 999;
     width: 100%;
     top: 0;

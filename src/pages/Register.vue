@@ -2,22 +2,24 @@
   <div class="register_wr">
     <container>
       <div class="register" :class="{ 'loading': loading }" v-if="!registerSuccess">
-        <h1 class="register__title">{{ $t('pages.registration.title') }}</h1>
+        <h1 class="register__title" physical-body>{{ $t('pages.registration.title') }}</h1>
 
         <transition-expand>
-          <div class="register__error_msg" v-if="errorMsg != null" @click="errorMsg = null">
+          <div class="register__error_msg" v-if="errorMsg != null" @click="errorMsg = null" physical-body>
             {{ errorMsg }}
           </div>
         </transition-expand>
 
         <form class="register__form" @submit.prevent="doRegister">
           <text-input :hint="$t('pages.registration.form.hints.name')"
+                      physical-body
                       v-model="form.name"
                       class="register__input"
                       @input="errorHints.name = null"
                       :error-hint="errorHints.name"/>
 
           <text-input :hint="$t('pages.registration.form.hints.email')"
+                      physical-body
                       type="email"
                       v-model="form.email"
                       class="register__input"
@@ -25,6 +27,7 @@
                       :error-hint="errorHints.email"/>
 
           <text-input :hint="$t('pages.registration.form.hints.password')"
+                      physical-body
                       type="password"
                       class="register__input"
                       v-model="form.password"
@@ -32,24 +35,25 @@
                       :error-hint="errorHints.password"/>
 
           <text-input :hint="$t('pages.registration.form.hints.repeated_password')"
+                      physical-body
                       type="password"
                       class="register__input"
                       @input="errorHints.repeatedPassword = null"
                       v-model="form.repeatedPassword"
                       :error-hint="errorHints.repeatedPassword"/>
 
-          <e-button type="submit" class="register_button" green>{{ $t('pages.registration.form.submit_button') }}</e-button>
+          <e-button type="submit" class="register_button" green physical-body>{{ $t('pages.registration.form.submit_button') }}</e-button>
 
-          <div style="margin-top: 25px;">{{ $t('pages.registration.already_have_account') }}</div>
-          <router-link to="/login">{{ $t('pages.registration.login_link') }}</router-link>
+          <div style="margin-top: 25px;" physical-body>{{ $t('pages.registration.already_have_account') }}</div>
+          <router-link to="/login" physical-body>{{ $t('pages.registration.login_link') }}</router-link>
         </form>
       </div>
 
       <div class="register" v-else>
-        <h1 class="register__title register__title--green">{{ $t('pages.registration.success.yay') }} &#x1F929;</h1>
-        <div class="register__comment">{{ $t('pages.registration.success.comment_email') }}</div>
-        <div class="register__big-emoji">&#x1F4E7;</div>
-        <div class="register__comment">{{ $t('pages.registration.success.comment_page') }}</div>
+        <h1 class="register__title register__title--green" physical-body>{{ $t('pages.registration.success.yay') }} &#x1F929;</h1>
+        <div class="register__comment" physical-body>{{ $t('pages.registration.success.comment_email') }}</div>
+        <div class="register__big-emoji" physical-body>&#x1F4E7;</div>
+        <div class="register__comment" physical-body>{{ $t('pages.registration.success.comment_page') }}</div>
       </div>
     </container>
   </div>

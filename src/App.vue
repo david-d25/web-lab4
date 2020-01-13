@@ -28,6 +28,7 @@
   import ToasterPlugin from "#/plugins/ToasterPlugin";
   import axios from 'axios';
   import SnakeGame from "#/components/SnakeGame";
+  import AllFallsDownCheat from "#/lib/AllFallsDownCheat";
 
   Vue.use(VueRouter);
   Vue.use(ToasterPlugin);
@@ -76,6 +77,7 @@
     window.appLoaded = true;
     document.getElementById("preloader").outerHTML = "";
     setTimeout(() => {document.dispatchEvent(new Event("app-loaded"))}, 0);
+    AllFallsDownCheat();
   }
 
   export default {
