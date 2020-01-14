@@ -1,7 +1,7 @@
 <template>
-  <div class="snake_wr" :class="{ hidden }">
+  <div class="tetris_wr" :class="{ hidden }">
     <transition-expand>
-      <div class="snake" v-if="!hidden" :class="{ 'failed': game.failed }">
+      <div class="tetris" v-if="!hidden" :class="{ 'failed': game.failed }">
         <canvas ref="canvas" width="1000" height="1000"/>
         <div class="exit_hint">{{$t( 'components.snake_game.esc_to_exit' )}}</div>
         <div class="common_center_msg" v-if="state === 'before_start'">{{$t( 'components.snake_game.before_start_msg' )}}</div>
@@ -216,7 +216,7 @@
     pointer-events: none;
   }
 
-  .snake_wr {
+  .tetris_wr {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -231,7 +231,7 @@
     justify-content: center;
   }
 
-  .snake {
+  .tetris {
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, .5);
     display: inline-block;

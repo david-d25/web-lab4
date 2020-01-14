@@ -1,5 +1,12 @@
 export default {
   components: {
+    tetris_game: {
+      esc_to_exit: "Нажмите ESC, чтобы выйти",
+      before_start_msg: "Нажмите Enter, чтобы начать!",
+      next_elem: "Следующий элемент",
+      pls_give_points: "Поставьте лк пжжж 🙏",
+      pause: "Пауза, нажмите Enter"
+    },
     snake_game: {
       esc_to_exit: "Нажмите ESC, чтобы выйти",
       before_start_msg: "Нажмите Enter, чтобы начать!",

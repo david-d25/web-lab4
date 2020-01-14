@@ -6,6 +6,7 @@
                  :state-modal-blurred="blurCurrentView"/>
 
     <snake-game/>
+    <tetris-game/>
   </div>
 </template>
 
@@ -29,6 +30,7 @@
   import axios from 'axios';
   import SnakeGame from "#/components/SnakeGame";
   import AllFallsDownCheat from "#/lib/AllFallsDownCheat";
+  import TetrisGame from "#/components/TetrisGame";
 
   Vue.use(VueRouter);
   Vue.use(ToasterPlugin);
@@ -125,6 +127,7 @@
       }
     },
     components: {
+      TetrisGame,
       SnakeGame,
       'e-header': Header,
       'toaster': Toaster,
